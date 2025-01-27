@@ -1,58 +1,31 @@
-let cursor=-1;
-let answer=""
-let newWord=false
-let currentGuess=[]
+let currentLine=0
+let currentCell=0
+
 document.addEventListener("DOMContentLoaded",function(){
-    game();
+    gameLoop();
 });
 
-function game(){
-    cursor=-1;
-    console.log("game");
-    
+function gameLoop(){
     document.addEventListener("keydown",(event)=>{
-        let k=event.key;
+        let k=event.key
 
-        if(cursor%6==5){
-            if(k==="Enter"){
-                newWord=true;
-                cursor+=(cursor<36?1:0);
-                check();
-            }
-            else if(k==="Backspace"){
-                document.getElementById(`cell${cursor}`).textContent=" ";
-                cursor-=(cursor>=0?1:0);
-                currentGuess.pop();
+        if(k==="Enter"){
+            if (currentCell==6) {
+                currentLine+=(currentLine<6);
+                currentCell=0;
             }
         }
-        else if(cursor%6==0 ){
-            if(k==="Backspace"){
-                currentGuess.pop();
-                document.getElementById(`cell${cursor}`).textContent=" ";
-            }
-            else if((k.toLowerCase()!=k.toUpperCase()) && k.length===1){
-                document.getElementById(`cell${cursor}`).textContent=k.toUpperCase();
-                newWord=true;
-                currentGuess.push(k);
-                cursor+=(cursor<36?1:0);
+        else if(k==="Backspace"){
+            if (currentCell>=0) {
+                currentCell-=(currentCell>0);
+                document.getElementById(`l${currentLine}c${currentCell}`).textContent=' ';
             }
         }
-        else{
-            if((k.toLowerCase()!=k.toUpperCase()) && k.length===1){
-                cursor+=(cursor<36 && !newWord?1:0);
-                newWord=false;
-                document.getElementById(`cell${cursor}`).textContent=k.toUpperCase();
-                currentGuess.push(k);
-            }
-            else if(k==="Backspace"){
-                document.getElementById(`cell${cursor}`).textContent=" ";
-                cursor-=(cursor>=0?1:0);
-                currentGuess.pop();
+        else if((k.toLowerCase()!=k.toUpperCase()) && k.length==1){
+            if(currentCell<6){
+                document.getElementById(`l${currentLine}c${currentCell}`).textContent=k.toUpperCase();
+                currentCell++;
             }
         }
-    })
-}
-function check(){
-    console.log(currentGuess);
-    currentGuess=[]
+    });
 }
