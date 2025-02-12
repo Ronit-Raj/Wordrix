@@ -952,6 +952,9 @@
   .transform-none {
     transform: none;
   }
+  .animate-bounce {
+    animation: var(--animate-bounce);
+  }
   .animate-none {
     animation: none;
   }
