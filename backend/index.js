@@ -3,6 +3,7 @@ const app=express();
 const fs=require('fs');
 const { type } = require('os');
 const port=8000;
+const frontend='http://localhost:5500'
 const dictFile='dict2.json'
 
 var words=null
@@ -18,11 +19,15 @@ app.listen(port,()=>{
 })
 app.get('/dict',(req,res)=>{
     res.statusCode=200
+    res.set('Access-Control-Allow-Origin','*')
     res.send(dict);
 })
 app.get('/game',(req,res)=>{
     var size=words.length
-    var ans=words[Math.floor(Math.random()*size)]
+    var ans={
+        "answer":words[Math.floor(Math.random()*size)]
+    }
+    res.set('Access-Control-Allow-Origin','*')
     res.statusCode=200
-    res.send(ans)
+    res.json(ans)
 })
