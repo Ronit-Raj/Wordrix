@@ -29,10 +29,15 @@ document.addEventListener("DOMContentLoaded",async function(){
 function updateDIV(k){
     if(k==="Enter"){
         if (currentCell==6) {
-            currentLine+=(currentLine<6);
-            currentCell=0;
-            checkGuess()
-            currentGuess=[]; // clear 
+            if(validWord()){
+                currentLine+=(currentLine<6);
+                currentCell=0;
+                checkGuess()
+                currentGuess=[]; // clear
+            }
+            else{
+                window.alert('invalid word')
+            } 
         }
     }
     else if(k==="Backspace"){
@@ -75,8 +80,6 @@ function validWord(){
 }
 function checkGuess(){
     answerCopy=[...answer]
-    if(!validWord())
-        return
     for (let i = 0; i < 6; i++) {
         if(currentGuess[i]===answerCopy[i]){
             document.getElementById(`l${currentLine-1}c${i}`).classList.remove('bg-gray-500');
