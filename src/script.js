@@ -6,7 +6,7 @@ let currentGuess=[]
 const backendURL='http://localhost:8000'
 
 document.addEventListener("DOMContentLoaded",async function(){
-    inputBoxes(6,6)
+    drawGameDiv(6,6)
     drawKeyboard()
     let dictResponse=await fetch(`${backendURL}/dict`);
     if(dictResponse.ok){
@@ -23,37 +23,38 @@ document.addEventListener("DOMContentLoaded",async function(){
     let answerJson=await answerResponse.json()
     answer=answerJson.answer
     console.log(answer);
-    
     gameLoop();
 });
+
+function updateDIV(k){
+    if(k==="Enter"){
+        if (currentCell==6) {
+            currentLine+=(currentLine<6);
+            currentCell=0;
+            checkGuess()
+            currentGuess=[]; // clear 
+        }
+    }
+    else if(k==="Backspace"){
+        if (currentCell>=0) {
+            currentCell-=(currentCell>0);
+            document.getElementById(`l${currentLine}c${currentCell}`).textContent=' ';
+            currentGuess.pop();
+        }
+    }
+    else if((k.toLowerCase()!=k.toUpperCase()) && k.length==1){
+        if(currentCell<6){
+            document.getElementById(`l${currentLine}c${currentCell}`).textContent=k.toUpperCase();
+            currentGuess.push(k.toLowerCase());
+            currentCell++;
+        }
+    }
+}
 
 function gameLoop(){
     document.addEventListener("keydown",(event)=>{
         let k=event.key
-        console.log(`key event ${k}`);
-        
-        if(k==="Enter"){
-            if (currentCell==6) {
-                currentLine+=(currentLine<6);
-                currentCell=0;
-                checkGuess()
-                currentGuess=[]; // clear 
-            }
-        }
-        else if(k==="Backspace"){
-            if (currentCell>=0) {
-                currentCell-=(currentCell>0);
-                document.getElementById(`l${currentLine}c${currentCell}`).textContent=' ';
-                currentGuess.pop();
-            }
-        }
-        else if((k.toLowerCase()!=k.toUpperCase()) && k.length==1){
-            if(currentCell<6){
-                document.getElementById(`l${currentLine}c${currentCell}`).textContent=k.toUpperCase();
-                currentGuess.push(k.toLowerCase());
-                currentCell++;
-            }
-        }
+        updateDIV(k)
     });
 }
 
@@ -97,7 +98,7 @@ function checkGuess(){
         }
     }
 }
-function inputBoxes(row,col){
+function drawGameDiv(row,col){
     parent=document.getElementById("grid-parent")
     parent.innerHTML=""
     rowDiv=null
@@ -108,25 +109,39 @@ function inputBoxes(row,col){
         for(let j=0;j<col;j++){
             div=document.createElement("div")
             div.setAttribute("id",`l${i}c${j}`)
-            div.setAttribute("class","bg-gray-500 w-12 h-12 rounded-md text-center text-white text-4xl font-bold")
+            div.setAttribute("class","bg-gray-500  w-12 h-12 rounded-md text-center text-white text-4xl font-bold ")
             rowDiv.appendChild(div)
         }
         parent.appendChild(rowDiv)
     }
 }
 function drawKeyboard(){
-    parent=document.getElementById("keyboard")    
-    // b=document.createElement('button')
-    // b.setAttribute('class','bg-red-500')
-    // b.innerHTML='test'
-    // grid=document.getElementById("grid-parent")
-    // b.addEventListener('click',(event)=>{
-    //     let e=new Event('keydown')
-    //     e.key='A'
-    //     console.log(e);
+    let keys=[['Q','W','E','R','T','Y','U','I','O','P'],
+              ['A','S','D','F','G','H','J','K','L'],
+              ['ENT','Z','X','C','V','B','N','M','BK']]
+    for (let i = 0; i < keys.length; i++) {
+        let c=document.getElementById(`keyr${i+1}`)
+        for (let j = 0; j < keys[i].length; j++) {
+            let b=document.createElement('div')
+            b.innerHTML=keys[i][j]
+            if(keys[i][j]!='BK' && keys[i][j]!='ENT')
+                b.setAttribute('class','bg-gray-500 sm:w-14 w-8 h-12 r text-white font-bold text-xl rounded-sm flex align-middle justify-center')
+            else
+            b.setAttribute('class','bg-gray-500 sm:w-21 w-13 h-12  text-white font-bold text-xl rounded-sm  flex align-middle justify-center')
+
+            b.addEventListener('pointerdown',(event)=>{
+                let k=null
+                if(keys[i][j]==='ENT')
+                    k='Enter'
+                else if(keys[i][j]==='BK')
+                    k="Backspace"
+                else
+                    k=keys[i][j]
+                updateDIV(k)
+            })
+            c.appendChild(b)
+        }
         
-    //     document.dispatchEvent(e)     
-    // })
-    // parent.appendChild(b)
-    
+    }
+
 }
