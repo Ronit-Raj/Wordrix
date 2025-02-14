@@ -6,6 +6,8 @@ let currentGuess=[]
 const backendURL='http://localhost:8000'
 
 document.addEventListener("DOMContentLoaded",async function(){
+    inputBoxes(6,6)
+    drawKeyboard()
     let dictResponse=await fetch(`${backendURL}/dict`);
     if(dictResponse.ok){
         dict=await dictResponse.json();        
@@ -28,6 +30,8 @@ document.addEventListener("DOMContentLoaded",async function(){
 function gameLoop(){
     document.addEventListener("keydown",(event)=>{
         let k=event.key
+        console.log(`key event ${k}`);
+        
         if(k==="Enter"){
             if (currentCell==6) {
                 currentLine+=(currentLine<6);
@@ -93,4 +97,36 @@ function checkGuess(){
         }
     }
 }
-
+function inputBoxes(row,col){
+    parent=document.getElementById("grid-parent")
+    parent.innerHTML=""
+    rowDiv=null
+    for(let i=0;i<row;i++){
+        rowDiv=document.createElement("div")
+        rowDiv.setAttribute("id",i)
+        rowDiv.setAttribute("class","flex gap-1")
+        for(let j=0;j<col;j++){
+            div=document.createElement("div")
+            div.setAttribute("id",`l${i}c${j}`)
+            div.setAttribute("class","bg-gray-500 w-12 h-12 rounded-md text-center text-white text-4xl font-bold")
+            rowDiv.appendChild(div)
+        }
+        parent.appendChild(rowDiv)
+    }
+}
+function drawKeyboard(){
+    parent=document.getElementById("keyboard")    
+    // b=document.createElement('button')
+    // b.setAttribute('class','bg-red-500')
+    // b.innerHTML='test'
+    // grid=document.getElementById("grid-parent")
+    // b.addEventListener('click',(event)=>{
+    //     let e=new Event('keydown')
+    //     e.key='A'
+    //     console.log(e);
+        
+    //     document.dispatchEvent(e)     
+    // })
+    // parent.appendChild(b)
+    
+}
