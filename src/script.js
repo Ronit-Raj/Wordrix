@@ -3,7 +3,7 @@ let currentCell=0
 let answer=null
 let dict=null
 let currentGuess=[]
-const backendURL='http://localhost:8000'
+const backendURL='https://wordle-d60u.onrender.com'
 
 document.addEventListener("DOMContentLoaded",async function(){
     drawGameDiv(6,6)
