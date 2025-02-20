@@ -36,7 +36,6 @@ function updateDIV(k){
                 currentGuess=[]; // clear
             }
             else{
-                window.alert('invalid word')
                 triggerSnackbar()
             } 
         }
@@ -58,7 +57,12 @@ function updateDIV(k){
 }
 
 function triggerSnackbar(){
-    
+    let warning=document.getElementById('wrong-word-snackbar')
+    warning.classList.remove('hidden')
+    warning.classList.add('animate-explode')
+    setTimeout(() => {
+        warning.classList.add('hidden')
+    }, 1000);
 }
 
 function gameLoop(){
@@ -79,7 +83,6 @@ function validWord(){
         return true;
     }
     else{
-        window.alert('invalid word');
         return false;
     }
 }

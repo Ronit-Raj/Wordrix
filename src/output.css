@@ -570,6 +570,10 @@ video {
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
 .h-12 {
   height: 3rem;
 }
@@ -596,29 +600,19 @@ video {
     opacity: 0;
   }
 
-  25% {
-    transform: scale(0.5);
-    opacity: 0.5;
-  }
-
   50% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  75% {
     transform: scale(0.5);
     opacity: 0.5;
   }
 
   100% {
-    transform: scale(0);
-    opacity: 0;
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
 .animate-explode {
-  animation: explode 2s linear 1;
+  animation: explode 0.4s linear 1;
 }
 
 .flex-col {
