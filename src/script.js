@@ -37,6 +37,7 @@ function updateDIV(k){
             }
             else{
                 window.alert('invalid word')
+                triggerSnackbar()
             } 
         }
     }
@@ -54,6 +55,10 @@ function updateDIV(k){
             currentCell++;
         }
     }
+}
+
+function triggerSnackbar(){
+    
 }
 
 function gameLoop(){

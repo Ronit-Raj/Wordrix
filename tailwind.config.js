@@ -4,15 +4,16 @@ module.exports = {
   theme: {
     extend: {
       keyframes:{
-        rotate:{
-
+        explode:{
+          '0%':{transform: "scale(0)",opacity:0},
+          '25%':{transform: "scale(0.5)",opacity:0.5},
+          '50%':{transform: "scale(1)",opacity:1},
+          '75%':{transform: "scale(0.5)",opacity:0.5},
+          '100%':{transform: "scale(0)",opacity:0},
         },
-        bounce:{
-          
-        }
       },
       animation:{
-
+        explode: "explode 2s linear 1",
       },
     },
   },
