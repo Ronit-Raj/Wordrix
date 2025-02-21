@@ -2,6 +2,7 @@ let currentLine=0
 let currentCell=0
 let answer=null
 let dict=null
+let running=true
 let currentGuess=[]
 const backendURL='https://wordle-d60u.onrender.com'
 
@@ -27,6 +28,8 @@ document.addEventListener("DOMContentLoaded",async function(){
 });
 
 function updateDIV(k){
+    if(!running)
+        return
     if(k==="Enter"){
         if (currentCell==6) {
             if(validWord()){
@@ -88,11 +91,13 @@ function validWord(){
 }
 function checkGuess(){
     answerCopy=[...answer]
+    let matched=0
     for (let i = 0; i < 6; i++) {
         if(currentGuess[i]===answerCopy[i]){
             document.getElementById(`l${currentLine-1}c${i}`).classList.remove('bg-gray-500');
             document.getElementById(`l${currentLine-1}c${i}`).classList.add('bg-green-500');
             answerCopy[i]='!';
+            matched++;
         }
     }
 
@@ -107,6 +112,10 @@ function checkGuess(){
                 }
             }
         }
+    }
+
+    if(matched===answerCopy.length){
+        showWinPopUp()        
     }
 }
 function drawGameDiv(row,col){
@@ -136,9 +145,9 @@ function drawKeyboard(){
             let b=document.createElement('div')
             b.innerHTML=keys[i][j]
             if(keys[i][j]!='BK' && keys[i][j]!='ENT')
-                b.setAttribute('class','bg-gray-500 sm:w-14 w-8 h-12 r text-white font-bold text-xl rounded-sm flex align-middle justify-center')
+                b.setAttribute('class','bg-gray-500 sm:w-14 w-8 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg flex align-middle justify-center')
             else
-            b.setAttribute('class','bg-gray-500 sm:w-21 w-13 h-12  text-white font-bold text-xl rounded-sm  flex align-middle justify-center')
+                b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg  flex align-middle justify-center')
 
             b.addEventListener('pointerdown',(event)=>{
                 let k=null
@@ -155,4 +164,25 @@ function drawKeyboard(){
         
     }
 
+}
+function reload(){
+    location.reload()
+}
+function showWinPopUp(){
+    let grid=document.getElementById('grid-parent');
+    let keyboard=document.getElementById('keyboard');
+    let winPopup=document.getElementById('win-popup');
+    winPopup.classList.remove('hidden');
+    grid.classList.add('blur-sm')
+    keyboard.classList.add('blur-sm')
+    running=false
+}
+function closeWinPopUp(){
+    let grid=document.getElementById('grid-parent');
+    let keyboard=document.getElementById('keyboard');
+    let winPopup=document.getElementById('win-popup');
+    winPopup.classList.add('hidden');
+    grid.classList.remove('blur-sm')
+    keyboard.classList.remove('blur-sm')
+    running=false
 }

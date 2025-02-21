@@ -7,7 +7,7 @@
     <script src="script.js"></script>
     <title>Wordle</title>
 </head>
-<body class="bg-slate-900 p-0 flex flex-col items-center">
+<body class=" bg-slate-900 p-0 flex flex-col items-center font-sans">
 
     <div id="wrong-word-snackbar" class="hidden flex items-center justify-center bg-red-600 text-white 
     fixed top-5 shadow-2xl  min-w-32 min-h-12 rounded-md text-lg font-bold
@@ -19,7 +19,7 @@
         
     </div>
 
-    <div id="keyboard" class=" flex flex-col gap-1 mt-55 sm:mt-20">
+    <div id="keyboard" class=" flex flex-col gap-1  fixed bottom-2 sm:bottom-14 ">
         <div id="keyr1" class="flex gap-1">
 
         </div>
@@ -29,6 +29,20 @@
         <div id="keyr3" class="flex gap-1 justify-center">
 
         </div>
+    </div>
+
+    <div id="win-popup" class="hidden text-white sm:fixed sm:top-44 items-center
+     bg-green-500 rounded-3xl h-80 w-64 flex flex-col">
+        <p class="text-2xl font-extrabold mt-3">
+            You Won
+        </p>
+         <img src="stars-svgrepo-com.svg" alt="" class="h-44 w-40">
+        <button class="h-8  w-5/6 border-2 rounded-lg border-white font-extrabold" onclick="reload()">
+            Replay
+        </button>
+        <button class="h-8  w-5/6  rounded-lg border-white mt-3 font-extrabold border-2 " onclick="closeWinPopUp()">
+            Close
+        </button>
     </div>
 </body>
 </html>
