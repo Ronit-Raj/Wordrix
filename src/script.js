@@ -4,10 +4,12 @@ let answer=null
 let dict=null
 let running=true
 let currentGuess=[]
+let wordLen=6
+let allowedGuess=6
 const backendURL='https://wordle-d60u.onrender.com'
 
 document.addEventListener("DOMContentLoaded",async function(){
-    drawGameDiv(6,6)
+    drawGameDiv(wordLen,allowedGuess)
     drawKeyboard()
     let dictResponse=await fetch(`${backendURL}/dict`);
     if(dictResponse.ok){
@@ -31,11 +33,11 @@ function updateDIV(k){
     if(!running)
         return
     if(k==="Enter"){
-        if (currentCell==6) {
+        if (currentCell==wordLen) {
             if(validWord()){
-                currentLine+=(currentLine<6);
+                currentLine+=(currentLine<allowedGuess);
                 currentCell=0;
-                checkGuess()
+                checkGuess() //to handle coloring of the cells 
                 currentGuess=[]; // clear
             }
             else{
@@ -51,7 +53,7 @@ function updateDIV(k){
         }
     }
     else if((k.toLowerCase()!=k.toUpperCase()) && k.length==1){
-        if(currentCell<6){
+        if(currentCell<wordLen){
             document.getElementById(`l${currentLine}c${currentCell}`).textContent=k.toUpperCase();
             currentGuess.push(k.toLowerCase());
             currentCell++;
@@ -77,7 +79,7 @@ function gameLoop(){
 
 function validWord(){
     let cg=""
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < wordLen; i++) {
         cg=cg.concat(currentGuess[i])
     }
     
@@ -89,10 +91,14 @@ function validWord(){
         return false;
     }
 }
+/*
+handles coloring of cells also trigers pop-ups in case
+of winning or losing
+*/
 function checkGuess(){
     answerCopy=[...answer]
     let matched=0
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < wordLen; i++) {
         if(currentGuess[i]===answerCopy[i]){
             document.getElementById(`l${currentLine-1}c${i}`).classList.remove('bg-gray-500');
             document.getElementById(`l${currentLine-1}c${i}`).classList.add('bg-green-500');
@@ -101,9 +107,9 @@ function checkGuess(){
         }
     }
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < wordLen; i++) {
         //
-        for(let j=0;j<6;j++){
+        for(let j=0;j<wordLen;j++){
             if(document.getElementById(`l${currentLine-1}c${i}`).classList.contains('bg-gray-500')){
                 if(currentGuess[i]===answerCopy[j]){
                     document.getElementById(`l${currentLine-1}c${i}`).classList.remove('bg-gray-500');
@@ -115,7 +121,10 @@ function checkGuess(){
     }
 
     if(matched===answerCopy.length){
-        showWinPopUp()        
+        showPopUp('win')        
+    }
+    if(currentLine===allowedGuess){
+        showPopUp('loose')
     }
 }
 function drawGameDiv(row,col){
@@ -168,20 +177,20 @@ function drawKeyboard(){
 function reload(){
     location.reload()
 }
-function showWinPopUp(){
+function showPopUp(type){
     let grid=document.getElementById('grid-parent');
     let keyboard=document.getElementById('keyboard');
-    let winPopup=document.getElementById('win-popup');
-    winPopup.classList.remove('hidden');
+    let popUp=document.getElementById(`${type}-popup`);
+    popUp.classList.remove('hidden');
     grid.classList.add('blur-sm')
     keyboard.classList.add('blur-sm')
     running=false
 }
-function closeWinPopUp(){
+function closePopUp(type){
     let grid=document.getElementById('grid-parent');
     let keyboard=document.getElementById('keyboard');
-    let winPopup=document.getElementById('win-popup');
-    winPopup.classList.add('hidden');
+    let popUp=document.getElementById(`${type}-popup`);
+    popUp.classList.add('hidden');
     grid.classList.remove('blur-sm')
     keyboard.classList.remove('blur-sm')
     running=false
