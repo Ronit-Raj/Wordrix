@@ -155,16 +155,29 @@ function drawKeyboard(){
             b.innerHTML=keys[i][j]
             if(keys[i][j]!='BK' && keys[i][j]!='ENT')
                 b.setAttribute('class','bg-gray-500 sm:w-14 w-8 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg flex align-middle justify-center')
-            else
+            else if(keys[i][j]=='BK'){
                 b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg  flex align-middle justify-center')
-
+                b.innerHTML=''
+                let bkIcon=document.createElement('img')
+                bkIcon.setAttribute('src','backspace.svg')
+                bkIcon.setAttribute('class','w-10 h-10')
+                b.appendChild(bkIcon)
+            }
+            else{
+                b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg  flex align-middle justify-center')
+                b.innerHTML=''
+                let doneIcon=document.createElement('img')
+                doneIcon.setAttribute('src','done.svg')
+                doneIcon.setAttribute('class','w-10 h-10')
+                b.appendChild(doneIcon)
+            }
             b.addEventListener('pointerdown',(event)=>{
                 let k=null
                 if(keys[i][j]==='ENT')
                     k='Enter'
-                else if(keys[i][j]==='BK')
+                else if(keys[i][j]==='BK'){
                     k="Backspace"
-                else
+                }else
                     k=keys[i][j]
                 updateDIV(k)
             })
