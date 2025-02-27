@@ -100,23 +100,29 @@ function checkGuess(){
     let matched=0
     for (let i = 0; i < wordLen; i++) {
         if(currentGuess[i]===answerCopy[i]){
-            document.getElementById(`l${currentLine-1}c${i}`).classList.remove('bg-gray-500');
-            document.getElementById(`l${currentLine-1}c${i}`).classList.add('bg-green-500');
+            document.getElementById(`l${currentLine-1}c${i}`).classList.toggle('bg-gray-500');
+            document.getElementById(`l${currentLine-1}c${i}`).classList.toggle('bg-green-500');
             answerCopy[i]='!';
             matched++;
         }
     }
 
     for (let i = 0; i < wordLen; i++) {
-        //
         for(let j=0;j<wordLen;j++){
             if(document.getElementById(`l${currentLine-1}c${i}`).classList.contains('bg-gray-500')){
                 if(currentGuess[i]===answerCopy[j]){
-                    document.getElementById(`l${currentLine-1}c${i}`).classList.remove('bg-gray-500');
-                    document.getElementById(`l${currentLine-1}c${i}`).classList.add('bg-orange-500');
+                    document.getElementById(`l${currentLine-1}c${i}`).classList.toggle('bg-gray-500');
+                    document.getElementById(`l${currentLine-1}c${i}`).classList.toggle('bg-orange-500');
                     answerCopy[j]='!';
                 }
             }
+        }
+    }
+
+    for (let i = 0; i < wordLen; i++) {
+        if(document.getElementById(`l${currentLine-1}c${i}`).classList.contains('bg-gray-500')){
+            document.getElementById(`l${currentLine-1}c${i}`).classList.toggle('bg-gray-500');
+            document.getElementById(`l${currentLine-1}c${i}`).classList.toggle('bg-gray-700');                 
         }
     }
 
@@ -138,7 +144,7 @@ function drawGameDiv(row,col){
         for(let j=0;j<col;j++){
             div=document.createElement("div")
             div.setAttribute("id",`l${i}c${j}`)
-            div.setAttribute("class","bg-gray-500  w-12 h-12 rounded-md text-center text-white text-4xl font-bold ")
+            div.setAttribute("class","bg-gray-500  w-12 h-12 rounded-md text-center text-white text-4xl font-bold transition-colors duration-1000")
             rowDiv.appendChild(div)
         }
         parent.appendChild(rowDiv)
@@ -180,6 +186,10 @@ function drawKeyboard(){
                 }else
                     k=keys[i][j]
                 updateDIV(k)
+                b.classList.toggle('shadow-gray-200')
+            })
+            b.addEventListener('pointerup',(event)=>{
+                b.classList.toggle('shadow-gray-200')
             })
             c.appendChild(b)
         }
