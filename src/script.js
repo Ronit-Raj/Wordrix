@@ -154,7 +154,7 @@ function drawKeyboard(){
             let b=document.createElement('div')
             b.innerHTML=keys[i][j]
             if(keys[i][j]!='BK' && keys[i][j]!='ENT')
-                b.setAttribute('class','bg-gray-500 sm:w-14 w-8 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg flex align-middle justify-center')
+                b.setAttribute('class','bg-gray-500 sm:w-14 w-[9vw] sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg flex align-middle justify-center')
             else if(keys[i][j]=='BK'){
                 b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg  flex align-middle justify-center')
                 b.innerHTML=''
