@@ -13,6 +13,11 @@ module.exports = {
       animation:{
         explode: "explode 0.4s linear 1",
       },
+      fontFamily:{
+        custom0:['Modak'],
+        custom1:['Barrio'],
+        custom2:['Barriecito']
+      }
     },
   },
   plugins: [],
