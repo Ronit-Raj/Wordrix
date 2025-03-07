@@ -4,30 +4,40 @@ let answer=null
 let dict=null
 let running=true
 let currentGuess=[]
-let wordLen=6
-let allowedGuess=6
+let wordLen=6 //no of columns 
+const allowedGuess=6 // no of rows 
 const backendURL='https://wordle-d60u.onrender.com'
 
 document.addEventListener("DOMContentLoaded",async function(){
-    drawGameDiv(wordLen,allowedGuess)
+    checkLocal()
+    drawGameDiv(allowedGuess,wordLen)
     drawKeyboard()
-    let dictResponse=await fetch(`${backendURL}/dict`);
+
+    const params=new URLSearchParams();
+    params.append("letters",wordLen);
+    let dictResponse=await fetch(`${backendURL}/dict?${params}`);
     if(dictResponse.ok){
         dict=await dictResponse.json();        
     }
     else{
         console.log(`/dict call failed ${dictResponse.status}`);
     }
+
+
     let answerResponse=await fetch(`${backendURL}/game`);
     if (!answerResponse.ok) {
         console.log(`/game call failed ${answer.status}`);
     }
-    
     let answerJson=await answerResponse.json()
     answer=answerJson.answer
     console.log(answer);
     gameLoop();
 });
+
+function checkLocal(){
+    if(localStorage.getItem('letters')!=null)
+        wordLen=parseInt(localStorage.getItem('letters'))
+}
 
 function updateDIV(k){
     if(!running)
@@ -160,9 +170,9 @@ function drawKeyboard(){
             let b=document.createElement('div')
             b.innerHTML=keys[i][j]
             if(keys[i][j]!='BK' && keys[i][j]!='ENT')
-                b.setAttribute('class','bg-gray-500 sm:w-14 w-[9vw] sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg flex align-middle justify-center')
+                b.setAttribute('class','bg-gray-500 sm:w-14 w-[9vw] sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-lg flex align-middle justify-center')
             else if(keys[i][j]=='BK'){
-                b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg  flex align-middle justify-center')
+                b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-lg  flex align-middle justify-center')
                 b.innerHTML=''
                 let bkIcon=document.createElement('img')
                 bkIcon.setAttribute('src','backspace.svg')
@@ -170,7 +180,7 @@ function drawKeyboard(){
                 b.appendChild(bkIcon)
             }
             else{
-                b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-b-lg  flex align-middle justify-center')
+                b.setAttribute('class','bg-gray-500 sm:w-20 w-14 sm:h-12 h-14 shadow-sm shadow-gray-200 text-white font-bold text-xl rounded-lg  flex align-middle justify-center')
                 b.innerHTML=''
                 let doneIcon=document.createElement('img')
                 doneIcon.setAttribute('src','done.svg')
@@ -217,4 +227,13 @@ function closePopUp(type){
     grid.classList.remove('blur-sm')
     keyboard.classList.remove('blur-sm')
     running=false
+}
+function closeSettings(){
+    closePopUp('settings')
+    running=true
+}
+
+function choseWordLength(l){
+    localStorage.setItem("letters",l)
+    reload()
 }
