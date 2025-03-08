@@ -3,11 +3,17 @@ const app=express();
 const fs=require('fs');
 const { type } = require('os');
 const port=8000;
+const cors=require('cors')
 const frontend='http://localhost:5500'
 let dictFile='dict5.json' //default values 
 let noOfLetters=5 //default values 
 
 var words=null
+
+app.use(cors({
+    origin:[frontend,'http://localhost:5500'],
+    methods:'GET'
+}))
 
 function readDict(){
     dict=fs.readFileSync(dictFile,'utf-8');
@@ -25,7 +31,6 @@ app.get('/dict',(req,res)=>{
     readDict()
 
     res.statusCode=200
-    res.set('Access-Control-Allow-Origin','*')
     res.send(dict);
 })
 app.get('/game',(req,res)=>{
@@ -33,7 +38,6 @@ app.get('/game',(req,res)=>{
     var ans={
         "answer":words[Math.floor(Math.random()*size)]
     }
-    res.set('Access-Control-Allow-Origin','*')
     res.statusCode=200
     res.json(ans)
 })
