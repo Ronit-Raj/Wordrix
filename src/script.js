@@ -139,7 +139,7 @@ function checkGuess(){
     if(matched===answerCopy.length){
         showPopUp('win')        
     }
-    if(currentLine===allowedGuess){
+    else if(currentLine===allowedGuess){
         showPopUp('loose')
     }
 }
