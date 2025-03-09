@@ -4,14 +4,14 @@ const fs=require('fs');
 const { type } = require('os');
 const port=8000;
 const cors=require('cors')
-const frontend='https://wonderful-blancmange-8cae92.netlify.app/*'
+const frontend='https://wonderful-blancmange-8cae92.netlify.app'
 let dictFile='dict5.json' //default values 
 let noOfLetters=5 //default values 
 
 var words=null
 
 app.use(cors({
-    origin:[frontend,'http://localhost:5500'],
+    origin:frontend,
     methods:'GET'
 }))
 
