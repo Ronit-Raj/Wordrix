@@ -23,21 +23,32 @@ app.listen(port,()=>{
 app.get('/dict',(req,res)=>{
     let noOfLetters=req.query.letters
     let dictFile=`dictComplete${noOfLetters}.json`
-    let dict=fs.readFileSync(dictFile,'utf-8')
+    fs.readFile(dictFile,'utf-8',(err,data)=>{
+        if(err){
+            console.log('error in reading complete dictionary');
+            console.log(err);
+        }
+        res.statusCode=200
+        res.send(data);
+    })
 
-    res.statusCode=200
-    res.send(dict);
 })
 
 //but only use the most common words as answer
 app.get('/game',(req,res)=>{
     let noOfLetters=req.query.letters
     let dictFile=`dict${noOfLetters}.json`
-    let words=JSON.parse(dictFile)
-    let size=words.length
-    let ans={
-        "answer":words[Math.floor(Math.random()*size)]
-    }
-    res.statusCode=200
-    res.json(ans)
+    fs.readFile(dictFile,'utf-8',(err,data)=>{
+        if(err){
+            console.log('error in reading answer dictionary');
+            console.log(err)
+        }
+        let words=JSON.parse(data)
+        let size=words.length
+        let ans={
+            "answer":words[Math.floor(Math.random()*size)]
+        }
+        res.statusCode=200
+        res.json(ans)
+    })
 })
