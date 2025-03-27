@@ -23,8 +23,7 @@ document.addEventListener("DOMContentLoaded",async function(){
         console.log(`/dict call failed ${dictResponse.status}`);
     }
 
-
-    let answerResponse=await fetch(`${backendURL}/game`);
+    let answerResponse=await fetch(`${backendURL}/game?${params}`);
     if (!answerResponse.ok) {
         console.log(`/game call failed ${answer.status}`);
     }
