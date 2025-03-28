@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded",async function(){
     }
     let answerJson=await answerResponse.json()
     answer=answerJson.answer
-    console.log(answer);
     gameLoop();
 });
 
@@ -214,6 +213,8 @@ function showPopUp(type){
     let keyboard=document.getElementById('keyboard');
     let popUp=document.getElementById(`${type}-popup`);
     popUp.classList.remove('hidden');
+    if(type==='loose')
+        document.getElementById('answer').innerHTML=`Answer is ${answer} 😞`
     grid.classList.add('blur-sm')
     keyboard.classList.add('blur-sm')
     running=false
